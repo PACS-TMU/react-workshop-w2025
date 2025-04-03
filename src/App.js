@@ -57,11 +57,18 @@ function App() {
   const [searchInput, setSearchInput] = useState("");
   const [searchTrigger, setSearchTrigger] = useState("");
   const [recipes, setRecipes] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [fetchComplete, setFetchComplete] = useState(false);
 
   // Search effect - triggered when searchTrigger changes
   useEffect(() => {
     // Skip empty searches
     if (!searchTrigger) return;
+
+    // Set loading to true when search starts
+    setIsLoading(true);
+    // Set fetchComplete to false at the beginning of new search
+    setFetchComplete(false);
 
     // Clear previous recipes
     setRecipes([]);
@@ -78,6 +85,7 @@ function App() {
         if (data.meals && data.meals.length > 0) {
           // Store the meal IDs for lookup
           const mealIds = data.meals.map((meal) => meal.idMeal);
+          const tempRecipes = []; // Temporary array to collect recipes
 
           // Process each meal ID - looking up details directly here
           for (const mealId of mealIds) {
@@ -108,28 +116,33 @@ function App() {
                   instructions: meal.strInstructions,
                 };
 
-                // Update recipes list with new recipe
-                setRecipes((currentRecipes) => {
-                  // Check if recipe already exists to avoid duplicates
-                  const exists = currentRecipes.some(
-                    (r) => r.title === formattedRecipe.title
-                  );
-                  if (!exists) {
-                    return [...currentRecipes, formattedRecipe];
-                  }
-                  return currentRecipes;
-                });
+                // Add to temporary array instead of setting state
+                const exists = tempRecipes.some(
+                  (r) => r.title === formattedRecipe.title
+                );
+                if (!exists) {
+                  tempRecipes.push(formattedRecipe);
+                }
               }
             } catch (error) {
               console.error("Error fetching meal details:", error);
             }
           }
+
+          // Only update state once with all recipes
+          setRecipes(tempRecipes);
         }
+        // Mark fetching as complete
+        setFetchComplete(true);
       })
       .catch((error) => {
         console.error("Error fetching search data:", error);
+        setFetchComplete(true);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
-  }, [searchTrigger]); // This effect runs whenever searchTrigger changes
+  }, [searchTrigger]);
 
   // Function to handle the search button click
   const handleSearch = () => {
@@ -161,7 +174,7 @@ function App() {
               }
             }}
           />
-          <button className="search-button">
+          <button className="search-button" onClick={handleSearch}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -178,16 +191,39 @@ function App() {
           </button>
         </div>
       </div>
+
+      {isLoading && (
+        <div className="loading-spinner">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="40"
+            height="40"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="spinner"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 6v6l4 2" />
+          </svg>
+          <p>Finding recipes...</p>
+        </div>
+      )}
+
       <div className="recipes-container">
-        {recipes.map((recipe, index) => (
-          <RecipeCard
-            key={index}
-            title={recipe.title}
-            time={recipe.time}
-            ingredients={recipe.ingredients}
-            instructions={recipe.instructions}
-          />
-        ))}
+        {fetchComplete &&
+          recipes.map((recipe, index) => (
+            <RecipeCard
+              key={index}
+              title={recipe.title}
+              time={recipe.time}
+              ingredients={recipe.ingredients}
+              instructions={recipe.instructions}
+            />
+          ))}
       </div>
     </div>
   );
