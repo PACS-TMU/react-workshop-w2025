@@ -47,23 +47,27 @@
 
 /* Recipe Card Styles */
 .recipes-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 30px;
-  padding: 40px 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 60px; /* Using grid-gap with a larger value */
+  padding: 40px;
   max-width: 1200px;
   margin: 0 auto;
 }
 
 .recipe-card {
-  width: 300px;
+  width: 100%;
   border: 1px solid #ddd;
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 25px; /* Increased internal padding */
   background-color: white;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 400px; /* Fixed height instead of min-height */
+  margin: 10px; /* Added margin on all sides */
 }
 
 .recipe-title {
@@ -97,4 +101,61 @@
   font-size: 14px;
   line-height: 1.5;
   color: #666;
+}
+
+.expand-button-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+}
+
+.expand-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.recipe-section:last-of-type {
+  margin-bottom: 40px;
+  overflow-y: auto;
+}
+
+/* Style for expanded cards */
+.recipe-card.expanded {
+  height: auto; /* Allow expanded cards to grow */
+  z-index: 1; /* Make expanded cards appear above others */
+}
+
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.loading-spinner p {
+  margin-top: 1rem;
+  font-size: 1rem;
+  color: #555;
+}
+
+.spinner {
+  animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
