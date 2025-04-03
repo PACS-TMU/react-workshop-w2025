@@ -1,4 +1,5 @@
-import './App.css';
+import "./App.css";
+import "./index.css";
 
 // Recipe Card Component
 function RecipeCard({ title, time, ingredients, instructions }) {
@@ -25,29 +26,55 @@ function App() {
       title: "Roasted Chicken",
       time: "30 Minutes",
       ingredients: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      instructions: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+      instructions:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     },
     {
       title: "Pasta Carbonara",
       time: "25 Minutes",
       ingredients: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      instructions: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+      instructions:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     },
     {
       title: "Vegetable Stir-Fry",
       time: "20 Minutes",
       ingredients: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      instructions: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-    }
+      instructions:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    },
   ];
 
   return (
     <div className="App">
+      <div className="header">
+        <p className="club-names">PACS x WiCS</p>
+        <h1 className="website-name">REACTRAUNT</h1>
+        <p className="slogan">cook watcha got.</p>
+        <div className="images">
+          <img src="/images/lightbulb.png" alt="Lightbulb icon" />
+          <img src="/images/cart.png" alt="Shopping cart icon" />
+        </div>
+      </div>
       <div className="search-container">
         <div className="search-bar">
-          <input type="text" placeholder="Add Ingredients" className="search-input" />
+          <input
+            type="text"
+            placeholder="Add Ingredients"
+            className="search-input"
+          />
           <button className="search-button">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <path d="M5 12h14m-7-7l7 7-7 7" />
             </svg>
           </button>
@@ -55,7 +82,7 @@ function App() {
       </div>
       <div className="recipes-container">
         {recipes.map((recipe, index) => (
-          <RecipeCard 
+          <RecipeCard
             key={index}
             title={recipe.title}
             time={recipe.time}
